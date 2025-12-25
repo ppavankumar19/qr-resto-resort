@@ -24,3 +24,11 @@ def menu():
 @app.route("/table-booking")
 def table_booking():
     return render_template("table_booking.html")
+
+@app.route("/rooms")
+def rooms():
+    return render_template("rooms.html")
+
+@app.route("/room-booking")
+def room_booking():
+    return render_template("room_booking.html")
