@@ -208,14 +208,29 @@ function selectItem(service, item, price){
 }
 
 function bookTable(){
+    const name = document.getElementById("name").value.trim();
+    const mobile = document.getElementById("mobile").value.trim();
+
+    if (name === "") {
+        alert("Please enter your name");
+        return;
+    }
+
+    if (mobile.length !== 10 || isNaN(mobile)) {
+        alert("Please enter a valid 10-digit mobile number");
+        return;
+    }
+
     const booking = {
         service: "Restaurant - Table Booking",
         item: "Table Booking",
         amount: 500
     };
+
     localStorage.setItem("booking", JSON.stringify(booking));
     window.location.href = "payment.html";
 }
+
 </script>
 
 </body>

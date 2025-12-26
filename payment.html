@@ -129,22 +129,23 @@ header p { margin-top: 6px; opacity: 0.95; }
     </div>
 
 </div>
-
 <script>
 // READ BOOKING DATA
-const booking = JSON.parse(localStorage.getItem("booking")) || {};
+const booking = JSON.parse(localStorage.getItem("booking"));
+
+// BLOCK DIRECT ACCESS
+if (!booking || !booking.service || !booking.item || !booking.amount) {
+    window.location.href = "index.html";
+}
 
 // FILL DATA ON LOAD
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("service").innerText =
-        booking.service || "-";
-    document.getElementById("item").innerText =
-        booking.item || "-";
-    document.getElementById("amount").innerText =
-        "₹ " + (booking.amount || 0);
+    document.getElementById("service").innerText = booking.service;
+    document.getElementById("item").innerText = booking.item;
+    document.getElementById("amount").innerText = "₹ " + booking.amount;
 });
 
-// DUMMY PAYMENT SUCCESS
+// PROCEED TO SUCCESS
 function payNow() {
     window.location.href = "success.html";
 }
@@ -153,6 +154,8 @@ function payNow() {
 function goBack() {
     window.history.back();
 }
+</script>
+
 </script>
 
 </body>

@@ -223,16 +223,30 @@ function selectRoom(service, room, price){
     localStorage.setItem("booking", JSON.stringify(booking));
     window.location.href = "payment.html";
 }
-
 function bookFullResort(){
+    const checkIn = document.querySelectorAll("input[type='date']")[0].value;
+    const checkOut = document.querySelectorAll("input[type='date']")[1].value;
+
+    if (!checkIn || !checkOut) {
+        alert("Please select check-in and check-out dates");
+        return;
+    }
+
+    if (new Date(checkOut) <= new Date(checkIn)) {
+        alert("Check-out date must be after check-in date");
+        return;
+    }
+
     const booking = {
         service: "Resort - Full Booking",
         item: "Entire Resort",
         amount: 15000
     };
+
     localStorage.setItem("booking", JSON.stringify(booking));
     window.location.href = "payment.html";
 }
+
 </script>
 
 </body>
