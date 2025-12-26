@@ -2,56 +2,89 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Booking Successful</title>
+<title>Booking Confirmed</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Arial, sans-serif;
     background: #f0f9f4;
     color: #333;
 }
 
 /* HEADER */
 header {
-    background: #2ecc71;
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
     color: white;
     text-align: center;
-    padding: 30px 15px;
+    padding: 45px 15px;
 }
+header h1 { margin: 0; }
+header p { margin-top: 6px; opacity: 0.95; }
 
 /* CONTAINER */
 .container {
     padding: 20px;
-    text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 /* CARD */
 .card {
     background: white;
-    border-radius: 14px;
-    padding: 30px 20px;
-    margin: 40px auto;
-    max-width: 400px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    border-radius: 18px;
+    padding: 30px 25px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    text-align: center;
 }
 
 /* ICON */
-.check {
-    font-size: 60px;
-    color: #2ecc71;
-    margin-bottom: 15px;
+.icon {
+    font-size: 64px;
+    margin-bottom: 10px;
+}
+
+/* BOOKING ID */
+.booking-id {
+    background: #ecfdf3;
+    border: 1px dashed #27ae60;
+    padding: 12px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-weight: 600;
+}
+
+/* SUMMARY */
+.summary {
+    text-align: left;
+    margin-top: 15px;
+}
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+/* AMOUNT */
+.amount {
+    font-size: 22px;
+    font-weight: bold;
+    color: #27ae60;
+    text-align: center;
+    margin: 20px 0;
 }
 
 /* BUTTON */
 .btn {
     display: block;
     width: 100%;
-    padding: 15px;
+    padding: 16px;
     margin-top: 20px;
+    border-radius: 12px;
     font-size: 18px;
-    border-radius: 8px;
     border: none;
     cursor: pointer;
     color: white;
@@ -64,20 +97,60 @@ header {
 <body>
 
 <header>
-    <h1>Success</h1>
-    <p>Booking Confirmed</p>
+    <h1>Booking Successful</h1>
+    <p>Thank you for choosing us</p>
 </header>
 
 <div class="container">
     <div class="card">
-        <div class="check">✅</div>
-        <h2>Thank You!</h2>
-        <p>Your booking has been successfully completed.</p>
-        <p>We look forward to serving you.</p>
 
-        <a href="index.html" class="btn">Go to Home</a>
+        <div class="icon">✅</div>
+
+        <h2>Thank You!</h2>
+        <p>Your booking has been confirmed.</p>
+
+        <div class="booking-id">
+            Booking ID: <span id="bookingId">-</span>
+        </div>
+
+        <div class="summary">
+            <div class="summary-row">
+                <strong>Service</strong>
+                <span id="service">-</span>
+            </div>
+            <div class="summary-row">
+                <strong>Name</strong>
+                <span id="name">-</span>
+            </div>
+        </div>
+
+        <div class="amount" id="amount">₹ 0</div>
+
+        <a href="index.html" class="btn">
+            Go to Home
+        </a>
+
     </div>
 </div>
+
+<script>
+// READ BOOKING DATA
+const booking = JSON.parse(localStorage.getItem("booking")) || {};
+
+// GENERATE BOOKING ID
+function generateBookingId() {
+    return "BK" + Date.now().toString().slice(-6);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("service").innerText = booking.service || "-";
+    document.getElementById("name").innerText = booking.name || "-";
+    document.getElementById("amount").innerText =
+        "₹ " + (booking.amount || 0);
+    document.getElementById("bookingId").innerText =
+        generateBookingId();
+});
+</script>
 
 </body>
 </html>
