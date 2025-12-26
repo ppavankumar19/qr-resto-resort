@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Resort | Booking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eef6fb;
+    color: #333;
+}
+
+/* HEADER */
+header {
+    background: #1f618d;
+    color: white;
+    text-align: center;
+    padding: 25px 15px;
+}
+
+/* CONTAINER */
+.container {
+    padding: 20px;
+}
+
+/* CARD */
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+/* ROOMS */
+.rooms li {
+    margin-bottom: 10px;
+}
+
+/* FORM */
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* BUTTONS */
+.btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 16px;
+    text-decoration: none;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-book {
+    background: #1f618d;
+}
+
+.btn-back {
+    background: #555;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🏨 Resort</h1>
+    <p>Relax • Stay • Enjoy</p>
+</header>
+
+<div class="container">
+
+    <!-- ROOMS -->
+    <div class="card">
+        <h2>Our Rooms</h2>
+        <ul class="rooms">
+            <li>Standard Room – ₹2000 / night</li>
+            <li>Deluxe Room – ₹3500 / night</li>
+            <li>Suite Room – ₹5000 / night</li>
+        </ul>
+    </div>
+
+    <!-- RESORT BOOKING -->
+    <div class="card">
+        <h2>Room / Resort Booking</h2>
+
+        <input type="text" placeholder="Name">
+        <input type="tel" placeholder="Mobile Number">
+
+        <select>
+            <option value="">Select Room Type</option>
+            <option>Standard Room</option>
+            <option>Deluxe Room</option>
+            <option>Suite Room</option>
+        </select>
+
+        <input type="date" placeholder="Check-in Date">
+        <input type="date" placeholder="Check-out Date">
+        <input type="number" placeholder="Number of Guests">
+
+        <button class="btn btn-book" onclick="goPayment()">
+            Proceed to Payment
+        </button>
+    </div>
+
+    <a href="index.html" class="btn btn-back">⬅ Back to Home</a>
+
+</div>
+
+<script>
+function goPayment() {
+    window.location.href = "payment.html";
+}
+</script>
+
+</body>
+</html>
