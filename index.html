@@ -18,52 +18,58 @@ body {
     background: linear-gradient(135deg, #c0392b, #e67e22);
     color: white;
     text-align: center;
-    padding: 50px 20px;
+    padding: 60px 20px 70px;
 }
 .hero h1 {
-    font-size: 30px;
-    margin-bottom: 8px;
+    font-size: 32px;
+    margin-bottom: 10px;
 }
 .hero p {
-    font-size: 16px;
+    font-size: 17px;
     opacity: 0.95;
 }
 
 /* CONTAINER */
 .container {
-    padding: 25px;
+    padding: 20px;
 }
 
 /* CARD */
 .card {
     background: white;
-    border-radius: 14px;
-    padding: 25px;
-    margin-top: -30px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    border-radius: 18px;
+    padding: 26px;
+    margin-top: -50px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.14);
     text-align: center;
 }
 
 /* BUTTONS */
 .btn {
     display: block;
-    padding: 16px;
-    margin-top: 18px;
+    padding: 18px;
+    margin-top: 22px;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 19px;
     color: white;
-    border-radius: 10px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 14px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+.btn:active {
+    transform: scale(0.97);
 }
 .restaurant {
     background: #c0392b;
 }
 .resort {
     background: #2980b9;
+}
+
+/* FOOT NOTE */
+.note {
+    margin-top: 18px;
+    font-size: 14px;
+    color: #777;
 }
 </style>
 </head>
@@ -72,16 +78,20 @@ body {
 
 <div class="hero">
     <h1>Restaurant & Resort</h1>
-    <p>Delicious Food • Comfortable Stay</p>
+    <p>Scan • Choose • Book • Relax</p>
 </div>
 
 <div class="container">
     <div class="card">
         <h2>Welcome</h2>
-        <p>Please choose a service</p>
+        <p>Please choose your service</p>
 
         <a href="restaurant.html" class="btn restaurant">🍽 Restaurant</a>
         <a href="resort.html" class="btn resort">🏨 Resort</a>
+
+        <div class="note">
+            Quick booking • No login required
+        </div>
     </div>
 </div>
 
