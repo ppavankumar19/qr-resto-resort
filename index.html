@@ -2,40 +2,62 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Welcome | Restaurant & Resort</title>
+<title>Restaurant & Resort</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f4f6f8;
+    color: #333;
 }
-header {
+
+/* HERO */
+.hero {
     background: linear-gradient(135deg, #c0392b, #e67e22);
     color: white;
     text-align: center;
-    padding: 30px 15px;
+    padding: 50px 20px;
 }
+.hero h1 {
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+.hero p {
+    font-size: 16px;
+    opacity: 0.95;
+}
+
+/* CONTAINER */
 .container {
-    padding: 20px;
+    padding: 25px;
 }
+
+/* CARD */
 .card {
     background: white;
+    border-radius: 14px;
     padding: 25px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    margin-top: -30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
     text-align: center;
 }
+
+/* BUTTONS */
 .btn {
     display: block;
-    padding: 15px;
-    margin-top: 15px;
+    padding: 16px;
+    margin-top: 18px;
     text-decoration: none;
     font-size: 18px;
     color: white;
-    border-radius: 8px;
+    border-radius: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
 }
 .restaurant {
     background: #c0392b;
@@ -48,15 +70,15 @@ header {
 
 <body>
 
-<header>
+<div class="hero">
     <h1>Restaurant & Resort</h1>
-    <p>Scan • Choose • Book</p>
-</header>
+    <p>Delicious Food • Comfortable Stay</p>
+</div>
 
 <div class="container">
     <div class="card">
         <h2>Welcome</h2>
-        <p>Please choose your service</p>
+        <p>Please choose a service</p>
 
         <a href="restaurant.html" class="btn restaurant">🍽 Restaurant</a>
         <a href="resort.html" class="btn resort">🏨 Resort</a>
