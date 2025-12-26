@@ -47,12 +47,13 @@ header p { margin-top: 6px; opacity: 0.95; }
 .summary-row strong {
     color: #555;
 }
+
 .amount {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: bold;
     color: #27ae60;
     text-align: center;
-    margin: 20px 0;
+    margin: 22px 0;
 }
 
 /* NOTE */
@@ -63,7 +64,7 @@ header p { margin-top: 6px; opacity: 0.95; }
     font-size: 14px;
     color: #2d6a4f;
     border-radius: 6px;
-    margin-top: 10px;
+    margin-top: 12px;
 }
 
 /* BUTTONS */
@@ -77,9 +78,11 @@ header p { margin-top: 6px; opacity: 0.95; }
     cursor: pointer;
     color: white;
 }
+
 .btn-pay {
     background: #27ae60;
 }
+
 .btn-cancel {
     background: #777;
 }
@@ -100,14 +103,15 @@ header p { margin-top: 6px; opacity: 0.95; }
 
         <div class="summary-row">
             <strong>Service</strong>
-            <span>Restaurant / Resort</span>
-        </div>
-        <div class="summary-row">
-            <strong>Name</strong>
-            <span>Customer Name</span>
+            <span id="service">-</span>
         </div>
 
-        <div class="amount">₹ 2000</div>
+        <div class="summary-row">
+            <strong>Name</strong>
+            <span id="name">-</span>
+        </div>
+
+        <div class="amount" id="amount">₹ 0</div>
 
         <button class="btn btn-pay" onclick="payNow()">
             Pay Now
@@ -125,11 +129,23 @@ header p { margin-top: 6px; opacity: 0.95; }
 </div>
 
 <script>
+// READ BOOKING DATA
+const booking = JSON.parse(localStorage.getItem("booking")) || {};
+
+// FILL DATA ON LOAD
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("service").innerText = booking.service || "-";
+    document.getElementById("name").innerText = booking.name || "-";
+    document.getElementById("amount").innerText =
+        "₹ " + (booking.amount || 0);
+});
+
+// DUMMY PAYMENT SUCCESS
 function payNow() {
-    // Dummy success (replace with Razorpay later)
     window.location.href = "success.html";
 }
 
+// CANCEL PAYMENT
 function goBack() {
     window.history.back();
 }
