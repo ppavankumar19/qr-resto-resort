@@ -2,94 +2,92 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Booking Confirmed</title>
+<title>Booking Successful</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
-    margin: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: #f0f9f4;
-    color: #333;
+body{
+    margin:0;
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:#f0f9f4;
+    color:#333;
 }
 
 /* HEADER */
-header {
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
-    color: white;
-    text-align: center;
-    padding: 45px 15px;
+header{
+    background:linear-gradient(135deg,#2ecc71,#27ae60);
+    color:#fff;
+    text-align:center;
+    padding:45px 16px;
 }
-header h1 { margin: 0; }
-header p { margin-top: 6px; opacity: 0.95; }
+header h1{margin:0}
+header p{margin-top:6px;opacity:.95}
 
 /* CONTAINER */
-.container {
-    padding: 20px;
-    display: flex;
-    justify-content: center;
+.container{
+    padding:20px;
+    display:flex;
+    justify-content:center;
 }
 
 /* CARD */
-.card {
-    background: white;
-    border-radius: 18px;
-    padding: 30px 25px;
-    max-width: 420px;
-    width: 100%;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    text-align: center;
+.card{
+    background:#fff;
+    border-radius:18px;
+    padding:30px 24px;
+    max-width:420px;
+    width:100%;
+    box-shadow:0 12px 30px rgba(0,0,0,.15);
+    text-align:center;
 }
 
 /* ICON */
-.icon {
-    font-size: 64px;
-    margin-bottom: 10px;
+.icon{
+    font-size:64px;
+    margin-bottom:10px;
 }
 
 /* BOOKING ID */
-.booking-id {
-    background: #ecfdf3;
-    border: 1px dashed #27ae60;
-    padding: 12px;
-    border-radius: 8px;
-    margin: 15px 0;
-    font-weight: 600;
+.booking-id{
+    background:#ecfdf3;
+    border:1px dashed #27ae60;
+    padding:12px;
+    border-radius:8px;
+    margin:16px 0;
+    font-weight:600;
 }
 
 /* SUMMARY */
-.summary {
-    text-align: left;
-    margin-top: 15px;
+.summary{
+    text-align:left;
+    margin-top:15px;
 }
-.summary-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:10px;
 }
 
 /* AMOUNT */
-.amount {
-    font-size: 22px;
-    font-weight: bold;
-    color: #27ae60;
-    text-align: center;
-    margin: 20px 0;
+.amount{
+    font-size:22px;
+    font-weight:bold;
+    color:#27ae60;
+    text-align:center;
+    margin:20px 0;
 }
 
 /* BUTTON */
-.btn {
-    display: block;
-    width: 100%;
-    padding: 16px;
-    margin-top: 20px;
-    border-radius: 12px;
-    font-size: 18px;
-    border: none;
-    cursor: pointer;
-    color: white;
-    background: #27ae60;
-    text-decoration: none;
+.btn{
+    display:block;
+    width:100%;
+    padding:16px;
+    margin-top:18px;
+    border-radius:12px;
+    font-size:17px;
+    text-decoration:none;
+    color:white;
+    background:#27ae60;
 }
 </style>
 </head>
@@ -97,7 +95,7 @@ header p { margin-top: 6px; opacity: 0.95; }
 <body>
 
 <header>
-    <h1>Booking Successful</h1>
+    <h1>Booking Successful 🎉</h1>
     <p>Thank you for choosing us</p>
 </header>
 
@@ -105,7 +103,6 @@ header p { margin-top: 6px; opacity: 0.95; }
     <div class="card">
 
         <div class="icon">✅</div>
-
         <h2>Thank You!</h2>
         <p>Your booking has been confirmed.</p>
 
@@ -119,15 +116,15 @@ header p { margin-top: 6px; opacity: 0.95; }
                 <span id="service">-</span>
             </div>
             <div class="summary-row">
-                <strong>Name</strong>
-                <span id="name">-</span>
+                <strong>Item</strong>
+                <span id="item">-</span>
             </div>
         </div>
 
         <div class="amount" id="amount">₹ 0</div>
 
         <a href="index.html" class="btn">
-            Go to Home
+            Back to Home
         </a>
 
     </div>
@@ -137,14 +134,16 @@ header p { margin-top: 6px; opacity: 0.95; }
 // READ BOOKING DATA
 const booking = JSON.parse(localStorage.getItem("booking")) || {};
 
-// GENERATE BOOKING ID
-function generateBookingId() {
-    return "BK" + Date.now().toString().slice(-6);
+// GENERATE SIMPLE BOOKING ID
+function generateBookingId(){
+    return "BK" + Math.floor(Math.random() * 900000 + 100000);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("service").innerText = booking.service || "-";
-    document.getElementById("name").innerText = booking.name || "-";
+    document.getElementById("service").innerText =
+        booking.service || "-";
+    document.getElementById("item").innerText =
+        booking.item || "-";
     document.getElementById("amount").innerText =
         "₹ " + (booking.amount || 0);
     document.getElementById("bookingId").innerText =
