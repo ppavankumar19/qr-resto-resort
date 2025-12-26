@@ -26,6 +26,8 @@ header p { margin-top: 6px; opacity: 0.95; }
 /* CONTAINER */
 .container {
     padding: 20px;
+    max-width: 500px;
+    margin: auto;
 }
 
 /* CARD */
@@ -107,8 +109,8 @@ header p { margin-top: 6px; opacity: 0.95; }
         </div>
 
         <div class="summary-row">
-            <strong>Name</strong>
-            <span id="name">-</span>
+            <strong>Item</strong>
+            <span id="item">-</span>
         </div>
 
         <div class="amount" id="amount">₹ 0</div>
@@ -134,8 +136,10 @@ const booking = JSON.parse(localStorage.getItem("booking")) || {};
 
 // FILL DATA ON LOAD
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("service").innerText = booking.service || "-";
-    document.getElementById("name").innerText = booking.name || "-";
+    document.getElementById("service").innerText =
+        booking.service || "-";
+    document.getElementById("item").innerText =
+        booking.item || "-";
     document.getElementById("amount").innerText =
         "₹ " + (booking.amount || 0);
 });

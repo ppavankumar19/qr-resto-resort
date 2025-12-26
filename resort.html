@@ -98,6 +98,7 @@ header p{margin-top:6px;opacity:.95}
     color:#fff;
     font-weight:600;
     background:linear-gradient(135deg,#1f618d,#3498db);
+    cursor:pointer;
     transition:transform .15s,box-shadow .15s;
 }
 .btn:hover{
@@ -160,7 +161,10 @@ header p{margin-top:6px;opacity:.95}
                 <h3>Standard Room</h3>
                 <div class="price">₹2000 / night</div>
                 <div class="features">AC • WiFi • TV</div>
-                <a href="payment.html" class="btn">Book Room</a>
+                <button class="btn"
+                    onclick="selectRoom('Resort','Standard Room',2000)">
+                    Book Room
+                </button>
             </div>
         </div>
 
@@ -170,7 +174,10 @@ header p{margin-top:6px;opacity:.95}
                 <h3>Deluxe Room</h3>
                 <div class="price">₹3500 / night</div>
                 <div class="features">AC • WiFi • Balcony</div>
-                <a href="payment.html" class="btn">Book Room</a>
+                <button class="btn"
+                    onclick="selectRoom('Resort','Deluxe Room',3500)">
+                    Book Room
+                </button>
             </div>
         </div>
 
@@ -180,7 +187,10 @@ header p{margin-top:6px;opacity:.95}
                 <h3>Suite Room</h3>
                 <div class="price">₹5000 / night</div>
                 <div class="features">Luxury • Living Area • View</div>
-                <a href="payment.html" class="btn">Book Room</a>
+                <button class="btn"
+                    onclick="selectRoom('Resort','Suite Room',5000)">
+                    Book Room
+                </button>
             </div>
         </div>
 
@@ -189,16 +199,41 @@ header p{margin-top:6px;opacity:.95}
     <!-- FULL RESORT BOOKING -->
     <div class="full">
         <h3>Book Entire Resort</h3>
-        <input placeholder="Name">
-        <input placeholder="Mobile">
-        <input type="date" placeholder="Check-in">
-        <input type="date" placeholder="Check-out">
+        <input id="name" placeholder="Name">
+        <input id="mobile" placeholder="Mobile">
+        <input type="date">
+        <input type="date">
         <input type="number" placeholder="Guests">
-        <a href="payment.html" class="btn">Book Entire Resort</a>
+
+        <button class="btn" onclick="bookFullResort()">
+            Book Entire Resort
+        </button>
     </div>
 
     <a href="index.html" class="back">⬅ Back to Home</a>
 </div>
+
+<script>
+function selectRoom(service, room, price){
+    const booking = {
+        service: service,
+        item: room,
+        amount: price
+    };
+    localStorage.setItem("booking", JSON.stringify(booking));
+    window.location.href = "payment.html";
+}
+
+function bookFullResort(){
+    const booking = {
+        service: "Resort - Full Booking",
+        item: "Entire Resort",
+        amount: 15000
+    };
+    localStorage.setItem("booking", JSON.stringify(booking));
+    window.location.href = "payment.html";
+}
+</script>
 
 </body>
 </html>

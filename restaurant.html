@@ -76,6 +76,7 @@ header p{margin-top:6px;opacity:.95}
     color:#fff;
     font-weight:600;
     background:linear-gradient(135deg,#c0392b,#e74c3c);
+    cursor:pointer;
     transition:transform .15s,box-shadow .15s;
 }
 .btn:hover{
@@ -127,12 +128,16 @@ header p{margin-top:6px;opacity:.95}
 
     <!-- MENU -->
     <div class="menu-grid">
+
         <div class="dish">
             <img src="images/dish1.jpg" alt="">
             <div class="dish-body">
                 <h3>Veg Biryani</h3>
                 <div class="price">₹180</div>
-                <a class="btn">Add / Book</a>
+                <button class="btn"
+                    onclick="selectItem('Restaurant','Veg Biryani',180)">
+                    Add / Book
+                </button>
             </div>
         </div>
 
@@ -141,7 +146,10 @@ header p{margin-top:6px;opacity:.95}
             <div class="dish-body">
                 <h3>Chicken Biryani</h3>
                 <div class="price">₹220</div>
-                <a class="btn">Add / Book</a>
+                <button class="btn"
+                    onclick="selectItem('Restaurant','Chicken Biryani',220)">
+                    Add / Book
+                </button>
             </div>
         </div>
 
@@ -150,7 +158,10 @@ header p{margin-top:6px;opacity:.95}
             <div class="dish-body">
                 <h3>Paneer Butter Masala</h3>
                 <div class="price">₹160</div>
-                <a class="btn">Add / Book</a>
+                <button class="btn"
+                    onclick="selectItem('Restaurant','Paneer Butter Masala',160)">
+                    Add / Book
+                </button>
             </div>
         </div>
 
@@ -159,24 +170,53 @@ header p{margin-top:6px;opacity:.95}
             <div class="dish-body">
                 <h3>Soft Drinks</h3>
                 <div class="price">₹40</div>
-                <a class="btn">Add / Book</a>
+                <button class="btn"
+                    onclick="selectItem('Restaurant','Soft Drinks',40)">
+                    Add / Book
+                </button>
             </div>
         </div>
+
     </div>
 
     <!-- TABLE BOOKING -->
     <div class="booking">
         <h2>Table Booking</h2>
-        <input placeholder="Name">
-        <input placeholder="Mobile">
+        <input id="name" placeholder="Name">
+        <input id="mobile" placeholder="Mobile">
         <input type="date">
         <input type="time">
         <input type="number" placeholder="Persons">
-        <a href="payment.html" class="btn">Book Table</a>
+
+        <button class="btn" onclick="bookTable()">
+            Book Table
+        </button>
     </div>
 
     <a href="index.html" class="back">⬅ Back to Home</a>
 </div>
+
+<script>
+function selectItem(service, item, price){
+    const booking = {
+        service: service,
+        item: item,
+        amount: price
+    };
+    localStorage.setItem("booking", JSON.stringify(booking));
+    window.location.href = "payment.html";
+}
+
+function bookTable(){
+    const booking = {
+        service: "Restaurant - Table Booking",
+        item: "Table Booking",
+        amount: 500
+    };
+    localStorage.setItem("booking", JSON.stringify(booking));
+    window.location.href = "payment.html";
+}
+</script>
 
 </body>
 </html>
