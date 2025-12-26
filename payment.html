@@ -20,8 +20,6 @@ header {
     text-align: center;
     padding: 40px 15px;
 }
-header h1 { margin: 0; }
-header p { margin-top: 6px; opacity: 0.95; }
 
 /* CONTAINER */
 .container {
@@ -35,7 +33,6 @@ header p { margin-top: 6px; opacity: 0.95; }
     background: white;
     border-radius: 16px;
     padding: 25px;
-    margin-bottom: 20px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.12);
 }
 
@@ -46,42 +43,41 @@ header p { margin-top: 6px; opacity: 0.95; }
     margin-bottom: 12px;
     font-size: 16px;
 }
-.summary-row strong {
-    color: #555;
-}
-
 .amount {
-    font-size: 24px;
+    font-size: 26px;
     font-weight: bold;
     color: #27ae60;
     text-align: center;
     margin: 22px 0;
 }
 
-/* NOTE */
-.note {
-    background: #f0fdf4;
-    border-left: 4px solid #27ae60;
-    padding: 12px;
-    font-size: 14px;
-    color: #2d6a4f;
-    border-radius: 6px;
-    margin-top: 12px;
+/* UPI BUTTONS */
+.upi-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:14px;
+    margin-top:12px;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:600;
+    color:#fff;
+    text-decoration:none;
 }
 
-/* BUTTONS */
-.btn {
-    width: 100%;
-    padding: 16px;
-    margin-top: 18px;
-    border-radius: 10px;
-    font-size: 17px;
-    border: none;
-    cursor: pointer;
-    color: white;
+.gpay{background:#000;}
+.phonepe{background:#5f259f;}
+.paytm{background:#002970;}
+
+.demo-note{
+    background:#fff3cd;
+    border-left:4px solid #f39c12;
+    padding:12px;
+    margin-top:16px;
+    font-size:14px;
+    color:#7a4f01;
+    border-radius:6px;
 }
-.btn-pay { background: #27ae60; }
-.btn-cancel { background: #777; }
 
 /* FOOTER */
 .footer{
@@ -97,26 +93,6 @@ header p { margin-top: 6px; opacity: 0.95; }
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
     gap:24px;
-}
-.footer-block h3{
-    margin-top:0;
-    color:#27ae60;
-    font-size:16px;
-}
-.footer-block p,
-.footer-block a{
-    font-size:14px;
-    color:#ccc;
-    text-decoration:none;
-}
-.footer-block a:hover{color:#27ae60;}
-.map-btn{
-    display:inline-block;
-    margin-top:8px;
-    padding:10px 14px;
-    background:#27ae60;
-    color:#fff !important;
-    border-radius:8px;
 }
 .footer-bottom{
     margin-top:30px;
@@ -151,8 +127,8 @@ header p { margin-top: 6px; opacity: 0.95; }
 <body>
 
 <header>
-    <h1>🔒 Secure Payment</h1>
-    <p>100% Safe & Encrypted</p>
+<h1>🔒 Secure Payment</h1>
+<p>UPI Demo Mode</p>
 </header>
 
 <div class="container">
@@ -161,23 +137,34 @@ header p { margin-top: 6px; opacity: 0.95; }
 <h2>Booking Summary</h2>
 
 <div class="summary-row">
-    <strong>Service</strong>
-    <span id="service">-</span>
+<strong>Service</strong>
+<span id="service">-</span>
 </div>
 
 <div class="summary-row">
-    <strong>Item</strong>
-    <span id="item">-</span>
+<strong>Details</strong>
+<span id="item">-</span>
 </div>
 
-<div class="amount" id="amount">₹ 0</div>
+<div class="amount" id="amount">₹0</div>
 
-<button class="btn btn-pay" onclick="payNow()">Pay Now</button>
-<button class="btn btn-cancel" onclick="goBack()">Cancel</button>
+<!-- UPI BUTTONS -->
+<a id="gpay" class="upi-btn gpay">Pay with Google Pay</a>
+<a id="phonepe" class="upi-btn phonepe">Pay with PhonePe</a>
+<a id="paytm" class="upi-btn paytm">Pay with Paytm</a>
 
-<div class="note">
-    You will be redirected to a secure payment gateway.
+<div class="demo-note">
+⚠️ Demo Mode: This opens a UPI app.<br>
+After payment, click below to continue.
 </div>
+
+<a href="success.html" class="upi-btn gpay" style="margin-top:14px;">
+I have completed payment
+</a>
+
+<a href="javascript:history.back()" style="display:block;text-align:center;margin-top:16px;color:#555;">
+Cancel
+</a>
 
 </div>
 </div>
@@ -185,36 +172,9 @@ header p { margin-top: 6px; opacity: 0.95; }
 <!-- FOOTER -->
 <footer class="footer">
 <div class="footer-container">
-
-<div class="footer-block">
-<h3>📍 Address</h3>
-<p>
-ABC Restaurant & Resort<br>
-Beach Road, Visakhapatnam
-</p>
+<div>
+<p>© 2025 ABC Restaurant & Resort</p>
 </div>
-
-<div class="footer-block">
-<h3>📞 Contact</h3>
-<p>
-<a href="tel:9876543210">+91 98765 43210</a><br>
-<a href="https://wa.me/919876543210" target="_blank">WhatsApp Chat</a>
-</p>
-</div>
-
-<div class="footer-block">
-<h3>🗺 Location</h3>
-<a class="map-btn"
-   href="https://www.google.com/maps?q=Visakhapatnam"
-   target="_blank">
-View on Google Maps
-</a>
-</div>
-
-</div>
-
-<div class="footer-bottom">
-© 2025 ABC Restaurant & Resort
 </div>
 </footer>
 
@@ -226,28 +186,26 @@ View on Google Maps
 <script>
 // READ BOOKING DATA
 const booking = JSON.parse(localStorage.getItem("booking"));
-
-// BLOCK DIRECT ACCESS
-if (!booking || !booking.service || !booking.item || !booking.amount) {
-    window.location.href = "index.html";
+if(!booking){
+    window.location.href="index.html";
 }
 
-// FILL DATA
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("service").innerText = booking.service;
-    document.getElementById("item").innerText = booking.item;
-    document.getElementById("amount").innerText = "₹ " + booking.amount;
-});
+document.getElementById("service").innerText = booking.service;
+document.getElementById("item").innerText = booking.item;
+document.getElementById("amount").innerText = "₹ " + booking.amount;
 
-// PAYMENT SUCCESS (DEMO FLOW)
-function payNow() {
-    window.location.href = "success.html";
-}
+// DEMO UPI DETAILS
+const upiId = "demo@upi";   // change later
+const name = "ABC Restaurant & Resort";
+const amount = booking.amount;
 
-// CANCEL PAYMENT
-function goBack() {
-    window.history.back();
-}
+// UPI LINK
+const upiLink =
+`upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR`;
+
+document.getElementById("gpay").href = upiLink;
+document.getElementById("phonepe").href = upiLink;
+document.getElementById("paytm").href = upiLink;
 </script>
 
 </body>
