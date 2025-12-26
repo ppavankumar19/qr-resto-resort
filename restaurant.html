@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Restaurant | Booking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fdf2e9;
+    color: #333;
+}
+
+/* HEADER */
+header {
+    background: #b03a2e;
+    color: white;
+    text-align: center;
+    padding: 25px 15px;
+}
+
+/* CONTAINER */
+.container {
+    padding: 20px;
+}
+
+/* CARD */
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+/* MENU */
+.menu li {
+    margin-bottom: 8px;
+}
+
+/* FORM */
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* BUTTONS */
+.btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-top: 15px;
+    text-align: center;
+    border-radius: 8px;
+    font-size: 16px;
+    text-decoration: none;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-book {
+    background: #b03a2e;
+}
+
+.btn-back {
+    background: #555;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>🍽 Restaurant</h1>
+    <p>Delicious Food • Easy Booking</p>
+</header>
+
+<div class="container">
+
+    <!-- MENU -->
+    <div class="card">
+        <h2>Our Menu</h2>
+        <ul class="menu">
+            <li>Veg Biryani – ₹180</li>
+            <li>Chicken Biryani – ₹220</li>
+            <li>Paneer Butter Masala – ₹160</li>
+            <li>Soft Drinks – ₹40</li>
+        </ul>
+    </div>
+
+    <!-- TABLE BOOKING -->
+    <div class="card">
+        <h2>Table Booking</h2>
+
+        <input type="text" placeholder="Name">
+        <input type="tel" placeholder="Mobile Number">
+        <input type="date">
+        <input type="time">
+        <input type="number" placeholder="Number of Persons">
+
+        <button class="btn btn-book" onclick="goPayment()">
+            Proceed to Payment
+        </button>
+    </div>
+
+    <a href="index.html" class="btn btn-back">⬅ Back to Home</a>
+
+</div>
+
+<script>
+function goPayment() {
+    window.location.href = "payment.html";
+}
+</script>
+
+</body>
+</html>
