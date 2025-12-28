@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Resort | Room Booking</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    font-family:Segoe UI,Arial,sans-serif;
+    background:#f4f6f8;
+}
+header{
+    background:linear-gradient(135deg,#1f618d,#3498db);
+    color:#fff;
+    text-align:center;
+    padding:45px 16px;
+}
+.container{
+    max-width:420px;
+    margin:30px auto;
+    padding:20px;
+}
+.card{
+    background:#fff;
+    border-radius:18px;
+    padding:24px;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+}
+label{
+    display:block;
+    margin-top:12px;
+    font-weight:600;
+    font-size:14px;
+}
+input{
+    width:100%;
+    padding:12px;
+    margin-top:6px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+.summary{
+    margin-top:16px;
+    background:#f1f9ff;
+    padding:12px;
+    border-radius:10px;
+    font-size:14px;
+}
+.total{
+    margin-top:14px;
+    font-size:18px;
+    font-weight:700;
+    color:#27ae60;
+    text-align:center;
+}
+.btn{
+    width:100%;
+    margin-top:18px;
+    padding:14px;
+    background:#27ae60;
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+}
+.back{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#555;
+    text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🏨 Room Booking</h1>
+<p id="roomTitle">Room</p>
+</header>
+
+<div class="container">
+<div class="card">
+
+<label>Name</label>
+<input id="name" placeholder="Your Name">
+
+<label>Mobile</label>
+<input id="mobile" placeholder="10-digit Mobile">
+
+<label>Check-in Date</label>
+<input type="date" id="checkin">
+
+<label>Check-out Date</label>
+<input type="date" id="checkout">
+
+<div class="summary">
+<strong>Room:</strong> <span id="roomName"></span><br>
+<strong>Price / Night:</strong> ₹<span id="price"></span><br>
+<strong>Nights:</strong> <span id="nights">0</span>
+</div>
+
+<div class="total">
+Total: ₹ <span id="total">0</span>
+</div>
+
+<button class="btn" onclick="bookRoom()">Proceed to Payment</button>
+
+</div>
+
+<a href="resort_rooms.html" class="back">⬅ Back to Rooms</a>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const room = params.get("room");
+const price = Number(params.get("price"));
+
+if(!room || !price){
+    alert("Invalid access");
+    window.location.href="resort_rooms.html";
+}
+
+document.getElementById("roomTitle").innerText = room + " Room";
+document.getElementById("roomName").innerText = room;
+document.getElementById("price").innerText = price;
+
+const checkin = document.getElementById("checkin");
+const checkout = document.getElementById("checkout");
+
+checkin.addEventListener("change", calcTotal);
+checkout.addEventListener("change", calcTotal);
+
+function calcTotal(){
+    if(!checkin.value || !checkout.value) return;
+
+    const d1 = new Date(checkin.value);
+    const d2 = new Date(checkout.value);
+    const diff = (d2 - d1) / (1000*60*60*24);
+
+    if(diff <= 0){
+        document.getElementById("nights").innerText = 0;
+        document.getElementById("total").innerText = 0;
+        return;
+    }
+
+    document.getElementById("nights").innerText = diff;
+    document.getElementById("total").innerText = diff * price;
+}
+
+function bookRoom(){
+    const name = document.getElementById("name").value.trim();
+    const mobile = document.getElementById("mobile").value.trim();
+
+    if(!name || !mobile || !checkin.value || !checkout.value){
+        alert("Fill all details");
+        return;
+    }
+
+    if(mobile.length !== 10 || isNaN(mobile)){
+        alert("Enter valid mobile number");
+        return;
+    }
+
+    const nights = Number(document.getElementById("nights").innerText);
+    const total = Number(document.getElementById("total").innerText);
+
+    if(nights <= 0){
+        alert("Invalid dates");
+        return;
+    }
+
+    fetch("http://127.0.0.1:10000/api/bookings",{
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({
+            service:"Resort Room Booking",
+            details:`${room} Room | ${nights} nights | ${checkin.value} to ${checkout.value}`,
+            amount: total
+        })
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        if(data.booking_id){
+            window.location.href =
+              "payment.html?id=" + data.booking_id;
+        }else{
+            alert("Booking failed");
+        }
+    })
+    .catch(()=>{
+        alert("Backend not reachable");
+    });
+}
+</script>
+
+</body>
+</html>

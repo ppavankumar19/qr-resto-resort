@@ -142,7 +142,8 @@ if(!bookingId){
     window.location.href="index.html";
 }
 
-fetch("http://127.0.0.1:5000/api/bookings/" + bookingId)
+// FETCH BOOKING DETAILS (READ ONLY)
+fetch("http://127.0.0.1:10000/api/bookings/" + bookingId + "/status",
 .then(res => {
     if(!res.ok) throw new Error();
     return res.json();
@@ -153,20 +154,12 @@ fetch("http://127.0.0.1:5000/api/bookings/" + bookingId)
     document.getElementById("item").innerText = data.details;
     document.getElementById("status").innerText = data.status;
     document.getElementById("amount").innerText = "₹ " + data.amount;
-
-    // UPDATE STATUS TO PAID (SUCCESS PAGE = PAYMENT DONE)
-    fetch("http://127.0.0.1:5000/api/bookings/" + bookingId + "/status", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "PAID" })
-    });
 })
 .catch(() => {
     alert("Booking not found");
     window.location.href="index.html";
 });
 </script>
-
 
 </body>
 </html>

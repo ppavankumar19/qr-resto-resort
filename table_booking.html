@@ -151,7 +151,7 @@ function bookTable(){
 
     const details = `Table for ${guests} on ${date} at ${time} (Name: ${name}, Mobile: ${mobile})`;
 
-    fetch("http://127.0.0.1:5000/api/bookings",{
+    fetch("http://127.0.0.1:10000/api/bookings",{
         method:"POST",
         headers:{ "Content-Type":"application/json" },
         body:JSON.stringify({

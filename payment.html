@@ -12,33 +12,23 @@ body{
     background:#f4f6f8;
     color:#333;
 }
-
-/* HEADER */
 header{
     background:linear-gradient(135deg,#27ae60,#2ecc71);
     color:#fff;
     text-align:center;
     padding:40px 16px;
 }
-header h1{margin:0}
-header p{margin-top:6px;opacity:.95}
-
-/* CONTAINER */
 .container{
     max-width:520px;
     margin:30px auto;
     padding:20px;
 }
-
-/* CARD */
 .card{
     background:#fff;
     border-radius:20px;
     padding:26px;
     box-shadow:0 14px 35px rgba(0,0,0,.18);
 }
-
-/* SUMMARY */
 .row{
     display:flex;
     justify-content:space-between;
@@ -52,8 +42,6 @@ header p{margin-top:6px;opacity:.95}
     text-align:center;
     margin:20px 0;
 }
-
-/* UPI */
 .upi-btn{
     display:flex;
     align-items:center;
@@ -69,19 +57,6 @@ header p{margin-top:6px;opacity:.95}
 .gpay{background:#000}
 .phonepe{background:#5f259f}
 .paytm{background:#002970}
-
-/* INFO */
-.info{
-    background:#eefaf1;
-    border-left:4px solid #27ae60;
-    padding:12px;
-    margin-top:16px;
-    font-size:14px;
-    color:#1e8449;
-    border-radius:8px;
-}
-
-/* DEMO NOTE */
 .demo{
     background:#fff3cd;
     border-left:4px solid #f39c12;
@@ -91,14 +66,11 @@ header p{margin-top:6px;opacity:.95}
     color:#7a4f01;
     border-radius:8px;
 }
-
-/* BUTTON */
 .done{
     margin-top:18px;
     background:#27ae60;
+    cursor:pointer;
 }
-
-/* FOOTER */
 .footer{
     background:#111;
     color:#aaa;
@@ -107,8 +79,6 @@ header p{margin-top:6px;opacity:.95}
     font-size:13px;
     margin-top:40px;
 }
-
-/* WHATSAPP */
 .whatsapp{
     position:fixed;
     bottom:22px;
@@ -123,8 +93,6 @@ header p{margin-top:6px;opacity:.95}
     justify-content:center;
     font-size:28px;
     text-decoration:none;
-    box-shadow:0 8px 18px rgba(0,0,0,.3);
-    z-index:999;
 }
 </style>
 </head>
@@ -158,19 +126,17 @@ header p{margin-top:6px;opacity:.95}
 
 <div class="amount" id="amount">₹0</div>
 
-<!-- UPI -->
 <a id="gpay" class="upi-btn gpay">Pay with Google Pay</a>
 <a id="phonepe" class="upi-btn phonepe">Pay with PhonePe</a>
 <a id="paytm" class="upi-btn paytm">Pay with Paytm</a>
 
 <div class="demo">
-⚠️ Demo Mode: This opens a UPI app.<br>
-After completing payment, click below.
+⚠️ Demo Mode: After payment click below
 </div>
 
-<a id="doneBtn" class="upi-btn done">
+<div id="doneBtn" class="upi-btn done">
 I have completed payment
-</a>
+</div>
 
 <a href="javascript:history.back()"
    style="display:block;text-align:center;margin-top:16px;color:#555;">
@@ -199,8 +165,8 @@ if(!bookingId){
 
 document.getElementById("bookingId").innerText = bookingId;
 
-/* FETCH BOOKING */
-fetch("http://127.0.0.1:5000/api/bookings/" + bookingId)
+// FETCH BOOKING
+fetch("http://127.0.0.1:10000/api/bookings/" + bookingId)
 .then(res=>{
     if(!res.ok) throw new Error();
     return res.json();
@@ -210,24 +176,35 @@ fetch("http://127.0.0.1:5000/api/bookings/" + bookingId)
     document.getElementById("details").innerText = data.details;
     document.getElementById("amount").innerText = "₹ " + data.amount;
 
-    const upiId = "demo@upi"; // replace later
+    const upiId = "demo@upi";
     const name = "ABC Restaurant & Resort";
     const amount = data.amount;
 
     const upiLink =
       `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR`;
 
-    document.getElementById("gpay").href = upiLink;
-    document.getElementById("phonepe").href = upiLink;
-    document.getElementById("paytm").href = upiLink;
-
-    document.getElementById("doneBtn").href =
-        "success.html?id=" + bookingId;
+    gpay.href = phonepe.href = paytm.href = upiLink;
 })
 .catch(()=>{
     alert("Booking not found");
     window.location.href="index.html";
 });
+
+// PAYMENT COMPLETE → UPDATE STATUS
+document.getElementById("doneBtn").onclick = () => {
+    fetch(`http://127.0.0.1:10000/api/bookings/${bookingId}/status`,{
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({ status:"PAID" })
+    })
+    .then(res=>{
+        if(!res.ok) throw new Error();
+        window.location.href="success.html?id=" + bookingId;
+    })
+    .catch(()=>{
+        alert("Payment update failed");
+    });
+};
 </script>
 
 </body>

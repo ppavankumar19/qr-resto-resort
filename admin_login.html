@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <title>Admin Login</title>
-<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body{
     margin:0;
@@ -10,30 +12,55 @@ body{
     display:flex;
     align-items:center;
     justify-content:center;
-    background:#2c3e50;
-    font-family:Segoe UI;
+    background:linear-gradient(135deg,#2c3e50,#34495e);
+    font-family:"Segoe UI",Arial,sans-serif;
 }
+
 .card{
     background:#fff;
-    padding:30px;
-    border-radius:12px;
-    width:300px;
+    padding:32px;
+    border-radius:14px;
+    width:320px;
+    box-shadow:0 14px 35px rgba(0,0,0,.3);
 }
-h2{text-align:center}
+
+h2{
+    text-align:center;
+    margin:0 0 20px;
+    color:#2c3e50;
+}
+
 input{
     width:100%;
     padding:12px;
-    margin-top:10px;
+    margin-top:12px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    font-size:15px;
 }
+
 button{
     width:100%;
-    margin-top:15px;
-    padding:12px;
+    margin-top:18px;
+    padding:14px;
     background:#27ae60;
     border:none;
     color:#fff;
     font-size:16px;
+    font-weight:600;
+    border-radius:10px;
     cursor:pointer;
+}
+
+button:hover{
+    background:#219150;
+}
+
+.note{
+    margin-top:14px;
+    font-size:13px;
+    text-align:center;
+    color:#777;
 }
 </style>
 </head>
@@ -41,25 +68,50 @@ button{
 <body>
 
 <div class="card">
-<h2>Admin Login</h2>
+    <h2>🔐 Admin Login</h2>
 
-<input id="user" placeholder="Username">
-<input id="pass" type="password" placeholder="Password">
+    <input id="user" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
 
-<button onclick="login()">Login</button>
+    <button onclick="login()">Login</button>
+
+    <div class="note">Authorized access only</div>
 </div>
 
 <script>
-function login(){
-    const u = document.getElementById("user").value;
-    const p = document.getElementById("pass").value;
+/* AUTO REDIRECT IF ALREADY LOGGED IN */
+if(localStorage.getItem("admin_token")){
+    window.location.href = "admin.html";
+}
 
-    if(u==="admin" && p==="admin123"){
-        localStorage.setItem("admin","logged");
-        window.location.href="admin.html";
-    }else{
-        alert("Invalid credentials");
+function login(){
+    const username = document.getElementById("user").value.trim();
+    const password = document.getElementById("pass").value.trim();
+
+    if(!username || !password){
+        alert("Enter username and password");
+        return;
     }
+
+    fetch("http://127.0.0.1:10000/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            username: username,
+            password: password
+        })
+    })
+    .then(res => {
+        if(!res.ok) throw new Error();
+        return res.json();
+    })
+    .then(data => {
+        localStorage.setItem("admin_token", data.token);
+        window.location.href = "admin.html";
+    })
+    .catch(() => {
+        alert("Invalid admin credentials");
+    });
 }
 </script>
 
