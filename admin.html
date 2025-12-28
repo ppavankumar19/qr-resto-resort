@@ -16,12 +16,42 @@ header{
     color:#fff;
     padding:20px;
     text-align:center;
+    position:relative;
+}
+header button{
+    position:absolute;
+    right:20px;
+    top:20px;
+    background:#c0392b;
+    color:#fff;
+    border:none;
+    padding:8px 14px;
+    border-radius:6px;
+    cursor:pointer;
 }
 .container{
-    max-width:1100px;
+    max-width:1200px;
     margin:20px auto;
     padding:20px;
 }
+
+/* SUMMARY */
+.summary{
+    display:flex;
+    gap:16px;
+    margin-bottom:20px;
+}
+.summary-box{
+    flex:1;
+    background:#fff;
+    padding:16px;
+    border-radius:12px;
+    box-shadow:0 6px 16px rgba(0,0,0,.1);
+}
+.summary-box h3{margin:0;color:#555}
+.summary-box h2{margin-top:10px}
+
+/* TABLE */
 table{
     width:100%;
     border-collapse:collapse;
@@ -31,23 +61,19 @@ table{
 th,td{
     padding:12px;
     border-bottom:1px solid #ddd;
-    text-align:left;
     font-size:14px;
 }
-th{
-    background:#ecf0f1;
-}
-.status{
-    font-weight:600;
-}
-.CONFIRMED{color:#2980b9;}
-.PAID{color:#27ae60;}
-.CANCELLED{color:#c0392b;}
+th{background:#ecf0f1}
+.status{font-weight:600}
+.CONFIRMED{color:#2980b9}
+.PAID{color:#27ae60}
+.CANCELLED{color:#c0392b}
 
 select{
     padding:6px;
     border-radius:6px;
 }
+
 .refresh{
     margin-bottom:12px;
     padding:10px 14px;
@@ -62,12 +88,35 @@ select{
 
 <body>
 
+<script>
+/* ADMIN PROTECTION */
+if(localStorage.getItem("admin") !== "logged"){
+    window.location.href = "admin_login.html";
+}
+</script>
+
 <header>
 <h1>📊 Admin Dashboard</h1>
 <p>Live Bookings</p>
+<button onclick="logout()">Logout</button>
 </header>
 
 <div class="container">
+
+<div class="summary">
+    <div class="summary-box">
+        <h3>Total Bookings</h3>
+        <h2 id="totalBookings">0</h2>
+    </div>
+    <div class="summary-box">
+        <h3>Total Revenue</h3>
+        <h2 id="totalRevenue">₹ 0</h2>
+    </div>
+    <div class="summary-box">
+        <h3>Pending</h3>
+        <h2 id="pendingBookings">0</h2>
+    </div>
+</div>
 
 <button class="refresh" onclick="loadBookings()">🔄 Refresh</button>
 
@@ -93,29 +142,40 @@ select{
 <script>
 const API = "http://127.0.0.1:10000/api/bookings";
 
+function logout(){
+    localStorage.removeItem("admin");
+    window.location.href="admin_login.html";
+}
+
 function loadBookings(){
     fetch(API)
-    .then(res => res.json())
-    .then(data => {
-        const tbody = document.getElementById("bookingTable");
-        tbody.innerHTML = "";
+    .then(res=>res.json())
+    .then(data=>{
+        const tbody=document.getElementById("bookingTable");
+        tbody.innerHTML="";
 
-        if(data.length === 0){
-            tbody.innerHTML =
-              "<tr><td colspan='7'>No bookings found</td></tr>";
+        let revenue=0, pending=0;
+
+        document.getElementById("totalBookings").innerText=data.length;
+
+        if(data.length===0){
+            tbody.innerHTML="<tr><td colspan='7'>No bookings</td></tr>";
             return;
         }
 
-        data.forEach(b => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
+        data.forEach(b=>{
+            if(b.status==="PAID") revenue+=b.amount;
+            else pending++;
+
+            const row=document.createElement("tr");
+            row.innerHTML=`
                 <td>${b.booking_id}</td>
                 <td>${b.service}</td>
                 <td>${b.details}</td>
                 <td>₹ ${b.amount}</td>
                 <td class="status ${b.status}">${b.status}</td>
                 <td>
-                    <select onchange="updateStatus('${b.booking_id}', this.value)">
+                    <select onchange="updateStatus('${b.booking_id}',this.value)">
                         <option disabled selected>Change</option>
                         <option value="CONFIRMED">CONFIRMED</option>
                         <option value="PAID">PAID</option>
@@ -126,25 +186,22 @@ function loadBookings(){
             `;
             tbody.appendChild(row);
         });
-    })
-    .catch(err=>{
-        alert("Unable to load bookings");
-        console.error(err);
+
+        document.getElementById("totalRevenue").innerText="₹ "+revenue;
+        document.getElementById("pendingBookings").innerText=pending;
     });
 }
 
 function updateStatus(id,status){
     fetch(`${API}/${id}/status`,{
         method:"PUT",
-        headers:{ "Content-Type":"application/json" },
+        headers:{"Content-Type":"application/json"},
         body:JSON.stringify({status})
-    })
-    .then(()=>loadBookings());
+    }).then(()=>loadBookings());
 }
 
-// AUTO LOAD
 loadBookings();
-setInterval(loadBookings, 5000);
+setInterval(loadBookings,5000);
 </script>
 
 </body>
