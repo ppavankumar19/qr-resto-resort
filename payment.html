@@ -64,7 +64,6 @@ header {
     color:#fff;
     text-decoration:none;
 }
-
 .gpay{background:#000;}
 .phonepe{background:#5f259f;}
 .paytm{background:#002970;}
@@ -84,23 +83,9 @@ header {
     background:#222;
     color:#eee;
     margin-top:40px;
-    padding-top:30px;
-}
-.footer-container{
-    max-width:1100px;
-    margin:auto;
-    padding:0 20px;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:24px;
-}
-.footer-bottom{
-    margin-top:30px;
-    text-align:center;
     padding:14px;
-    background:#111;
+    text-align:center;
     font-size:13px;
-    color:#aaa;
 }
 
 /* FLOATING WHATSAPP */
@@ -158,7 +143,7 @@ header {
 After payment, click below to continue.
 </div>
 
-<a href="success.html" class="upi-btn gpay" style="margin-top:14px;">
+<a id="doneBtn" class="upi-btn gpay" style="margin-top:14px;">
 I have completed payment
 </a>
 
@@ -169,43 +154,56 @@ Cancel
 </div>
 </div>
 
-<!-- FOOTER -->
 <footer class="footer">
-<div class="footer-container">
-<div>
-<p>© 2025 ABC Restaurant & Resort</p>
-</div>
-</div>
+© 2025 ABC Restaurant & Resort
 </footer>
 
-<!-- FLOATING WHATSAPP -->
 <a href="https://wa.me/919876543210"
    class="whatsapp-float"
    target="_blank">💬</a>
 
 <script>
-// READ BOOKING DATA
-const booking = JSON.parse(localStorage.getItem("booking"));
-if(!booking){
-    window.location.href="index.html";
+/* GET BOOKING ID FROM URL */
+const params = new URLSearchParams(window.location.search);
+const bookingId = params.get("id");
+
+if(!bookingId){
+    alert("Invalid access");
+    window.location.href = "index.html";
 }
 
-document.getElementById("service").innerText = booking.service;
-document.getElementById("item").innerText = booking.item;
-document.getElementById("amount").innerText = "₹ " + booking.amount;
+/* FETCH BOOKING FROM BACKEND */
+fetch("http://127.0.0.1:5000/api/bookings/" + bookingId)
+.then(res => {
+    if(!res.ok) throw new Error("Booking not found");
+    return res.json();
+})
+.then(data => {
+    document.getElementById("service").innerText = data.service;
+    document.getElementById("item").innerText = data.details;
+    document.getElementById("amount").innerText = "₹ " + data.amount;
 
-// DEMO UPI DETAILS
-const upiId = "demo@upi";   // change later
-const name = "ABC Restaurant & Resort";
-const amount = booking.amount;
+    /* SET UPI LINKS */
+    const upiId = "demo@upi";   // replace later
+    const name = "ABC Restaurant & Resort";
+    const amount = data.amount;
 
-// UPI LINK
-const upiLink =
-`upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR`;
+    const upiLink =
+      `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR`;
 
-document.getElementById("gpay").href = upiLink;
-document.getElementById("phonepe").href = upiLink;
-document.getElementById("paytm").href = upiLink;
+    document.getElementById("gpay").href = upiLink;
+    document.getElementById("phonepe").href = upiLink;
+    document.getElementById("paytm").href = upiLink;
+
+    /* SUCCESS BUTTON */
+    document.getElementById("doneBtn").href =
+        "success.html?id=" + bookingId;
+})
+.catch(err => {
+    alert("Unable to load booking");
+    console.error(err);
+    window.location.href = "index.html";
+});
 </script>
 
 </body>

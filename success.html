@@ -12,25 +12,17 @@ body{
     background:#f4f6f8;
     color:#333;
 }
-
-/* HEADER */
 header{
     background:linear-gradient(135deg,#27ae60,#2ecc71);
     color:#fff;
     text-align:center;
     padding:50px 16px;
 }
-header h1{margin:0;font-size:32px}
-header p{margin-top:6px;opacity:.95}
-
-/* CONTAINER */
 .container{
     max-width:520px;
     margin:30px auto;
     padding:20px;
 }
-
-/* CARD */
 .card{
     background:#fff;
     border-radius:18px;
@@ -38,31 +30,22 @@ header p{margin-top:6px;opacity:.95}
     box-shadow:0 12px 30px rgba(0,0,0,.15);
     text-align:center;
 }
-
-/* CHECK ICON */
 .check{
     font-size:64px;
     color:#27ae60;
 }
-
-/* DETAILS */
 .detail{
     display:flex;
     justify-content:space-between;
     margin-top:12px;
     font-size:15px;
 }
-.detail strong{color:#555}
-
-/* AMOUNT */
 .amount{
     margin-top:18px;
     font-size:22px;
     font-weight:700;
     color:#27ae60;
 }
-
-/* BUTTONS */
 .btn{
     display:block;
     margin-top:18px;
@@ -72,67 +55,16 @@ header p{margin-top:6px;opacity:.95}
     font-weight:600;
     color:#fff;
 }
-
-.btn-home{
-    background:#2980b9;
-}
-
-.btn-print{
-    background:#7f8c8d;
-}
-
-/* NOTE */
-.note{
-    margin-top:16px;
-    font-size:13px;
-    color:#666;
-}
-
-/* FOOTER */
+.btn-home{background:#2980b9;}
+.btn-print{background:#7f8c8d;}
 .footer{
     background:#222;
-    color:#eee;
-    margin-top:40px;
-    padding-top:30px;
-}
-.footer-container{
-    max-width:1100px;
-    margin:auto;
-    padding:0 20px;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:24px;
-}
-.footer-block h3{
-    margin-top:0;
-    color:#27ae60;
-    font-size:16px;
-}
-.footer-block p,
-.footer-block a{
-    font-size:14px;
-    color:#ccc;
-    text-decoration:none;
-}
-.footer-block a:hover{color:#27ae60;}
-.map-btn{
-    display:inline-block;
-    margin-top:8px;
-    padding:10px 14px;
-    background:#27ae60;
-    color:#fff !important;
-    border-radius:8px;
-}
-.footer-bottom{
-    margin-top:30px;
-    text-align:center;
-    padding:14px;
-    background:#111;
-    font-size:13px;
     color:#aaa;
+    margin-top:40px;
+    padding:14px;
+    text-align:center;
+    font-size:13px;
 }
-
-/* FLOATING WHATSAPP */
 .whatsapp-float{
     position:fixed;
     bottom:22px;
@@ -148,7 +80,6 @@ header p{margin-top:6px;opacity:.95}
     font-size:28px;
     text-decoration:none;
     box-shadow:0 8px 18px rgba(0,0,0,.3);
-    z-index:999;
 }
 </style>
 </head>
@@ -181,95 +112,63 @@ header p{margin-top:6px;opacity:.95}
 <span id="item">-</span>
 </div>
 
+<div class="detail">
+<strong>Status</strong>
+<span id="status">-</span>
+</div>
+
 <div class="amount" id="amount">₹0</div>
 
 <a href="index.html" class="btn btn-home">Back to Home</a>
 <a href="#" onclick="window.print()" class="btn btn-print">Print / Save</a>
 
-<div class="note">
-Please show this confirmation at the restaurant / resort if required.
-</div>
-
 </div>
 </div>
 
-<!-- FOOTER -->
 <footer class="footer">
-<div class="footer-container">
-
-<div class="footer-block">
-<h3>📍 Address</h3>
-<p>
-ABC Restaurant & Resort<br>
-Beach Road, Visakhapatnam
-</p>
-</div>
-
-<div class="footer-block">
-<h3>📞 Contact</h3>
-<p>
-<a href="tel:9876543210">+91 98765 43210</a><br>
-<a href="https://wa.me/919876543210" target="_blank">WhatsApp Chat</a>
-</p>
-</div>
-
-<div class="footer-block">
-<h3>🗺 Location</h3>
-<a class="map-btn"
-   href="https://www.google.com/maps?q=Visakhapatnam"
-   target="_blank">
-View on Google Maps
-</a>
-</div>
-
-</div>
-
-<div class="footer-bottom">
 © 2025 ABC Restaurant & Resort
-</div>
 </footer>
 
-<!-- FLOATING WHATSAPP -->
 <a href="https://wa.me/919876543210"
    class="whatsapp-float"
    target="_blank">💬</a>
 
 <script>
-const booking = JSON.parse(localStorage.getItem("booking")) || {};
+/* GET BOOKING ID FROM URL */
+const params = new URLSearchParams(window.location.search);
+const bookingId = params.get("id");
 
-function generateId(){
-    return "BK" + Math.floor(Math.random()*900000 + 100000);
+if(!bookingId){
+    alert("Invalid access");
+    window.location.href="index.html";
 }
 
-const bookingId = generateId();
+/* FETCH FROM BACKEND */
+fetch("http://127.0.0.1:5000/api/bookings/" + bookingId)
+.then(res=>{
+    if(!res.ok) throw new Error("Booking not found");
+    return res.json();
+})
+.then(data=>{
+    document.getElementById("bookingId").innerText = data.booking_id;
+    document.getElementById("service").innerText = data.service;
+    document.getElementById("item").innerText = data.details;
+    document.getElementById("status").innerText = data.status;
+    document.getElementById("amount").innerText = "₹ " + data.amount;
+})
+.catch(err=>{
+    alert("Invalid booking");
+    window.location.href="index.html";
+});
 
-// Fill data
-document.getElementById("bookingId").innerText = bookingId;
-document.getElementById("service").innerText = booking.service || "-";
-document.getElementById("item").innerText = booking.item || "-";
-document.getElementById("amount").innerText = "₹ " + (booking.amount || 0);
+// MARK BOOKING AS PAID
+fetch("http://127.0.0.1:5000/api/bookings/" + bookingId + "/status", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status: "PAID" })
+});
 
-// AUTO WHATSAPP MESSAGE
-const phone = "919876543210"; // change to client number
-const message =
-`Booking Confirmed ✅
-Booking ID: ${bookingId}
-Service: ${booking.service}
-Details: ${booking.item}
-Amount: ₹${booking.amount}`;
-
-const whatsappUrl =
-`https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-
-// Auto open WhatsApp after 2 seconds
-setTimeout(() => {
-    window.open(whatsappUrl, "_blank");
-}, 2000);
-
-// Clear booking
-localStorage.removeItem("booking");
 </script>
-
 
 </body>
 </html>

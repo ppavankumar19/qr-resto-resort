@@ -311,23 +311,42 @@ function renderCart(){
     document.getElementById("cartTotal").innerText="Total: ₹"+total;
 }
 
-/* CHECKOUT */
+/* CHECKOUT – REAL BACKEND */
 function checkout(){
-    if(cart.length===0){
+    if(cart.length === 0){
         alert("Please add items to cart");
         return;
     }
 
-    const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
+    const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+    const details = cart.map(i => `${i.name} x${i.qty}`).join(", ");
 
-    localStorage.setItem("booking",JSON.stringify({
-        service:"Restaurant Order",
-        item:cart.map(i=>i.name+"×"+i.qty).join(", "),
-        amount:total
-    }));
-
-    window.location.href="payment.html";
+    fetch("http://127.0.0.1:5000/api/bookings", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            service: "Restaurant Order",
+            details: details,
+            amount: total
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.booking_id){
+            // redirect with real booking id
+            window.location.href = "payment.html?id=" + data.booking_id;
+        } else {
+            alert("Booking failed. Try again.");
+        }
+    })
+    .catch(err => {
+        alert("Backend not reachable. Is server running?");
+        console.error(err);
+    });
 }
+
 </script>
 
 </body>

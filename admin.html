@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    margin:0;
+    font-family:Segoe UI,Arial,sans-serif;
+    background:#f4f6f8;
+}
+header{
+    background:#2c3e50;
+    color:#fff;
+    padding:20px;
+    text-align:center;
+}
+.container{
+    max-width:1100px;
+    margin:20px auto;
+    padding:20px;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:#fff;
+    box-shadow:0 8px 20px rgba(0,0,0,.1);
+}
+th,td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+    text-align:left;
+    font-size:14px;
+}
+th{
+    background:#ecf0f1;
+}
+.status{
+    font-weight:600;
+}
+.CONFIRMED{color:#2980b9;}
+.PAID{color:#27ae60;}
+.CANCELLED{color:#c0392b;}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>📊 Admin Dashboard</h1>
+<p>All Bookings</p>
+</header>
+
+<div class="container">
+<table>
+<thead>
+<tr>
+<th>Booking ID</th>
+<th>Service</th>
+<th>Details</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Created</th>
+</tr>
+</thead>
+<tbody id="bookingTable">
+<tr><td colspan="6">Loading...</td></tr>
+</tbody>
+</table>
+</div>
+
+<script>
+fetch("http://127.0.0.1:5000/api/bookings")
+.then(res => res.json())
+.then(data => {
+    const tbody = document.getElementById("bookingTable");
+    tbody.innerHTML = "";
+
+    if(data.length === 0){
+        tbody.innerHTML =
+          "<tr><td colspan='6'>No bookings found</td></tr>";
+        return;
+    }
+
+    data.forEach(b => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${b.booking_id}</td>
+            <td>${b.service}</td>
+            <td>${b.details}</td>
+            <td>₹ ${b.amount}</td>
+            <td class="status ${b.status}">${b.status}</td>
+            <td>${b.created_at}</td>
+        `;
+        tbody.appendChild(row);
+    });
+})
+.catch(err=>{
+    alert("Unable to load bookings");
+    console.error(err);
+});
+</script>
+
+</body>
+</html>
